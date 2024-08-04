@@ -1,0 +1,3 @@
+module SDL3 {
+  header "SDL3.h"
+}
