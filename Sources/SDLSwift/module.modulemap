@@ -1,0 +1,3 @@
+module SDL3 {
+  header "shim.h"
+}
