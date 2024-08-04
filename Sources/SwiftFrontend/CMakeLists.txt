@@ -8,4 +8,6 @@ set_target_properties(SwiftFrontend PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "cxxswift"
   MACOSX_BUNDLE_GUI_IDENTIFIER "gay.pizza.cxxswift"
   BUILD_RPATH "@loader_path/../Frameworks"
+  XCODE_ATTRIBUTE_SKIP_INSTALL "NO"
+  XCODE_ATTRIBUTE_INSTALL_PATH "$(LOCAL_APPS_DIR)"
   MACOSX_BUNDLE_COPYRIGHT "© 2024 Gay Pizza Specifications")
