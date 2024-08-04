@@ -1,5 +1,3 @@
-find_library(SDL3 SDL3 REQUIRED PATHS "${CMAKE_SOURCE_DIR}/Frameworks" NO_DEFAULT_PATH)
-
 add_library(SDLSwift INTERFACE)
 set_property(TARGET SDLSwift PROPERTY Swift_MODULE_NAME "SDL3")
 
