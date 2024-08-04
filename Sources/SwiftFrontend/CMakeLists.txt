@@ -1,5 +1,5 @@
 add_executable(SwiftFrontend MACOSX_BUNDLE main.swift Application.swift)
-target_link_libraries(SwiftFrontend PRIVATE CppBackend SDL3)
+target_link_libraries(SwiftFrontend PRIVATE CppBackend SDLSwift)
 set_target_properties(SwiftFrontend PROPERTIES
   XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME NO
   MACOSX_BUNDLE_BUNDLE_NAME "cxxswift"
