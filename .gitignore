@@ -1,6 +1,7 @@
 /build-*
-/xcode-*
+/xcode*
 /.swiftpm
 /.swift
 /.vscode
 /.idea
+.DS_Store

@@ -4,4 +4,6 @@ set_property(TARGET SDL3 PROPERTY CXX_STANDARD 20)
 
 target_compile_options(SDL3 PUBLIC "$<$<COMPILE_LANGUAGE:Swift>:-cxx-interoperability-mode=default>")
 target_include_directories(SDL3 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
-target_link_libraries(SDL3 PUBLIC SDL3::SDL3)
+
+find_library(SDL3_LIB SDL3 REQUIRED)
+target_link_libraries(SDL3 PUBLIC ${SDL3_LIB})
