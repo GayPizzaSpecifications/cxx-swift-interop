@@ -1,4 +1,4 @@
-add_library(CppBackend STATIC backend.h backend.cpp)
+add_library(CppBackend STATIC ball.hpp ball.cpp)
 set_property(TARGET CppBackend PROPERTY Swift_MODULE_NAME "CppBackend")
 set_property(TARGET CppBackend PROPERTY CXX_STANDARD 20)
 

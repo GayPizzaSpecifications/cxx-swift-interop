@@ -6,11 +6,15 @@
 //
 
 import Foundation
+import CppBackend
 import SDL3
 
 class Application {
   private var window: OpaquePointer? = nil
   private var renderer: OpaquePointer? = nil
+
+  private var balls = BallWorld()
+  private var lastCounter: UInt64 = 0
 
   private func initialize() -> ApplicationExecutionState {
     guard SDL_Init(SDL_INIT_VIDEO) >= 0 else {
@@ -18,7 +22,10 @@ class Application {
       return .exitFailure
     }
 
-    window = SDL_CreateWindow("Hello World", 512, 512, 0)
+    let width: Int32 = 512, height: Int32 = 512
+    let sdlWindowResizable:        SDL_WindowFlags = 0x0000000000000020
+    let sdlWindowHighPixelDensity: SDL_WindowFlags = 0x0000000000002000
+    window = SDL_CreateWindow("Hello World", width, height, sdlWindowResizable | sdlWindowHighPixelDensity)
     guard window != nil else {
       print("SDL_CreateWindow() error: \(String(cString: SDL_GetError()))")
       return .exitFailure
@@ -29,6 +36,19 @@ class Application {
       print("SDL_CreateRenderer() error: \(String(cString: SDL_GetError()))")
       return .exitFailure
     }
+    SDL_SetRenderVSync(renderer, 1)
+    SDL_SetRenderLogicalPresentation(renderer, 512, 512, SDL_LOGICAL_PRESENTATION_LETTERBOX, SDL_SCALEMODE_BEST)
+
+    let ballOrigin = SIMD2(Float(width), Float(height)) * 0.5
+    for _ in 0..<10 {
+      balls.add(
+        ballOrigin,
+        Float(arc4random()) / Float(UInt32.max),
+        Float(arc4random_uniform(32 - 3) + 3)
+      )
+    }
+
+    lastCounter = SDL_GetPerformanceCounter()
 
     return .running
   }
@@ -58,14 +78,33 @@ class Application {
     }
   }
 
-  private func paint() -> ApplicationExecutionState {
+  private func paint(_ deltaTime: Float) -> ApplicationExecutionState {
+    balls.update(deltaTime)
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255)
     SDL_RenderClear(renderer)
-    var rect = SDL_FRect(x: 0, y: 0, w: 100, h: 100)
+
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
-    SDL_RenderFillRect(renderer, &rect)
+    for ball in balls.balls {
+      let position = ball.position().pointee, size = ball.size()
+      var rect = SDL_FRect(
+        x: position.x - size,
+        y: position.y - size,
+        w: size * 2.0,
+        h: size * 2.0
+      )
+      SDL_RenderFillRect(renderer, &rect)
+    }
+
     SDL_RenderPresent(renderer)
     return .running
+  }
+
+  private func deltaTime() -> Double {
+    let counter = SDL_GetPerformanceCounter()
+    let divisor = 1.0 / Double(SDL_GetPerformanceFrequency())
+    defer { lastCounter = counter }
+    return Double(counter &- lastCounter) * divisor
   }
 
   func run() -> Int32 {
@@ -78,7 +117,7 @@ class Application {
           break quit
         }
       }
-      res = paint()
+      res = paint(Float(deltaTime()))
     }
     return res == .exitSuccess ? 0 : 1
   }
