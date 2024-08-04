@@ -7,5 +7,4 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 include(InitializeSwift)
 include(AddSwift)
 
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/Sources/CppBackend")
 add_subdirectory(Sources)
