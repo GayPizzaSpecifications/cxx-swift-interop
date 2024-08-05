@@ -1,5 +1,5 @@
-add_executable(SwiftFrontend MACOSX_BUNDLE main.swift Application.swift)
-target_link_libraries(SwiftFrontend PRIVATE SwiftBackend SDLSwift)
+add_executable(SwiftFrontend MACOSX_BUNDLE main.swift Application.swift Ball.swift)
+target_link_libraries(SwiftFrontend PRIVATE SDLSwift)
 set_target_properties(SwiftFrontend PROPERTIES
   XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME NO
   XCODE_EMBED_FRAMEWORKS "${SDL3}"

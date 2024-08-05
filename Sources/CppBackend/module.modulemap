@@ -1,3 +1,0 @@
-module CppBackend {
-  header "ball.hpp"
-}

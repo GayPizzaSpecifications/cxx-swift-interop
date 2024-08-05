@@ -1,4 +1,2 @@
 add_subdirectory(SwiftFrontend)
 add_subdirectory(SDLSwift)
-add_subdirectory(CppBackend)
-add_subdirectory(SwiftBackend)
