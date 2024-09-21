@@ -82,8 +82,8 @@ class Application {
     for ball in balls.balls {
       let position = ball.position(), size = ball.size()
       var rect = SDL_FRect(
-        x: position.pointee.x - size,
-        y: position.pointee.y - size,
+        x: position.x - size,
+        y: position.y - size,
         w: size * 2.0,
         h: size * 2.0
       )

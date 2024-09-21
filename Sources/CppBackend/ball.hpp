@@ -19,10 +19,10 @@ public:
 
   void update(float deltaTime) noexcept;
 
-  [[nodiscard]] constexpr const vec2f& position() const noexcept {
+  [[nodiscard]] constexpr vec2f position() const noexcept {
     return _position;
   }
-  [[nodiscard]] constexpr const vec2f& velocity() const noexcept {
+  [[nodiscard]] constexpr vec2f velocity() const noexcept {
     return _velocity;
   }
   [[nodiscard]] constexpr const float size() const noexcept {
@@ -34,7 +34,7 @@ public:
 struct BallWorld {
   std::vector<Ball> balls;
 
-  BallWorld() noexcept;
+  BallWorld() noexcept = default;
   virtual ~BallWorld() noexcept = default;
 
   void add(Ball::vec2f pos, float angle, float ballSize) noexcept;

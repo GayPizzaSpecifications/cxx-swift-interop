@@ -30,8 +30,6 @@ void Ball::update(float deltaTime) noexcept {
 }
 
 
-BallWorld::BallWorld() noexcept : balls() {}
-
 void BallWorld::add(Ball::vec2f pos, float angle, float ballSize) noexcept {
   balls.emplace_back(Ball{ pos, angle, ballSize });
 }
