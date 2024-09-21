@@ -1,13 +1,6 @@
-//
-//  Application.swift
-//  cxxswift
-//
-//  Created by Alex Zenla on 8/3/24.
-//
-
 import Foundation
 import SDL3
-import SwiftBackend
+import CppBackend
 
 class Application {
   private var window: OpaquePointer? = nil
@@ -15,9 +8,9 @@ class Application {
 
   private var lastCounter: UInt64 = 0
 
+  private var balls = BallWorld()
+
   private func initialize() -> ApplicationExecutionState {
-    FuckYou.fuck()
-    
     guard SDL_Init(SDL_INIT_VIDEO) >= 0 else {
       print("SDL_Init() error: \(String(cString: SDL_GetError()))")
       return .exitFailure
@@ -39,6 +32,15 @@ class Application {
     }
     SDL_SetRenderVSync(renderer, 1)
     SDL_SetRenderLogicalPresentation(renderer, 512, 512, SDL_LOGICAL_PRESENTATION_LETTERBOX, SDL_SCALEMODE_BEST)
+
+    let ballOrigin = SIMD2(Float(width), Float(height)) * 0.5
+    for _ in 0..<10 {
+      balls.add(
+        ballOrigin,
+        Float(arc4random()) / Float(UInt32.max),
+        Float(arc4random_uniform(32 - 3) + 3)
+      )
+    }
 
     lastCounter = SDL_GetPerformanceCounter()
 
@@ -71,10 +73,22 @@ class Application {
   }
 
   private func paint(_ deltaTime: Float) -> ApplicationExecutionState {
+    balls.update(deltaTime)
+
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255)
     SDL_RenderClear(renderer)
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
+    for ball in balls.balls {
+      let position = ball.position(), size = ball.size()
+      var rect = SDL_FRect(
+        x: position.pointee.x - size,
+        y: position.pointee.y - size,
+        w: size * 2.0,
+        h: size * 2.0
+      )
+      SDL_RenderFillRect(renderer, &rect)
+    }
 
     SDL_RenderPresent(renderer)
     return .running

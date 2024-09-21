@@ -34,6 +34,9 @@ public:
 struct BallWorld {
   std::vector<Ball> balls;
 
+  BallWorld() noexcept;
+  virtual ~BallWorld() noexcept = default;
+
   void add(Ball::vec2f pos, float angle, float ballSize) noexcept;
   void update(float deltaTime) noexcept;
 };
